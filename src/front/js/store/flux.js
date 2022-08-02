@@ -33,6 +33,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading message from backend", error)
 				}
 			},
+			getAllEmployees: async () => {
+				try{
+					const resp = await fetch(process.env.BACKEND_URL + "/api/employees")
+					const data = await resp.json()
+					setStore({employees: data})
+					return data;
+				}catch(error){
+					console.log("Error occurred while fetching employee records", error)
+				}
+			},
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
