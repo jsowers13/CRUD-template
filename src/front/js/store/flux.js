@@ -13,7 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			employees: [],
+			currentEmployee: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -38,9 +40,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await fetch(process.env.BACKEND_URL + "/api/employees")
 					const data = await resp.json()
 					setStore({employees: data})
+					console.log(employees);
 					return data;
 				}catch(error){
 					console.log("Error occurred while fetching employee records", error)
+				}
+			},
+			getEmployeeByID: async (id) => {
+				try{
+					const resp = await fetch(process.env.BACKEND_URL + "api/employees/" + id)
+					const data = await resp.json()
+					setStore({currentEmployee: data})
+					console.log(currentEmployee);
+					return data;
+				}catch(error){
+					console.log("Error occurred while retrieving employee record", error)
+				}
+			},
+			createEmployee: async (first_name, last_name, email, phone_number) => {
+				try{
+					const resp = await fetch(process.env.BACKEND_URL + "/api/employees", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({first_name, last_name, email, phone_number})
+					})
+					if (resp.ok){
+						return (true);
+					}
+				}catch(error) {
+					console.log("Error occurred while creating new employee", error)
 				}
 			},
 			changeColor: (index, color) => {
