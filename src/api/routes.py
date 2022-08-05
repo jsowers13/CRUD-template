@@ -21,7 +21,7 @@ def handle_hello():
 def get_all_employees():
     employees = Employee.query.all()
     all_employees = list(map(lambda employee: employee.serialize(), employees))
-     return jsonify(all_employees), 200
+    return jsonify(all_employees), 200
 
 @api.route('/employees', methods=['POST'])
 def create_new_employee():
