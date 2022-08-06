@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Create = () => {
@@ -7,10 +8,12 @@ export const Create = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const navigate = useNavigate();
 
   const submitform = (e) => {
     e.preventDefault();
     actions.createEmployee(firstName, lastName, email, phoneNumber);
+    navigate("/read");
   };
   return (
     <div className="container mt-5">

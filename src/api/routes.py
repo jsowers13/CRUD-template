@@ -31,11 +31,11 @@ def create_new_employee():
     email = body["email"]
     phone_number = body["phone_number"]
     employee = Employee(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number)
-
+    print(employee)
     db.session.add(employee)
     db.session.commit()
-    new_employee = jsonify(employee.serialize)
-    return (new_employee), 201
+    # new_employee = jsonify(employee.serialize)
+    return (jsonify(employee.serialize())), 201
 
 @api.route('/employees/<int:id>', methods=['GET'])
 def get_employee_by_id():
