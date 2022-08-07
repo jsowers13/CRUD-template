@@ -67,6 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              employee_number,
               first_name,
               last_name,
               email,
