@@ -40,15 +40,23 @@ def create_new_employee():
 
 @api.route('/employees/<int:id>', methods=['GET'])
 def get_employee_by_id(id):
-    single_employee = Employee.query.filter_by(id=="id")
+    single_employee = Employee.query.get(id)
     print(single_employee)
 
-    return jsonify(single_employee), 200
+    return jsonify(single_employee.serialize()), 200
 
-# @api.route('/employees/<int:id>', methods=['PUT'])
-# def update_employee_info(id):
-#     employee = Employee.query.get(id)
-
+@api.route('/employees/<int:id>', methods=['PUT'])
+def update_employee_info(id):
+    # employee = Employee.query.get(id)
+    body=request.get_json()
+    first_name = body["first_name"]
+    last_name = body["last_name"]
+    email = body["email"]
+    phone_number = body["phone_number"]
+    employee = Employee(id=id, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number)
+    db.session.add(employee)
+    db.session.commit()
+    return (jsonify(employee.serialize())), 204
 
 @api.route('/employees/<int:id>', methods=['DELETE'])
 def delete_employee(id):

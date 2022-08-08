@@ -81,6 +81,38 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error occurred while creating new employee", error);
         }
       },
+      updateEmployee: async (
+        id,
+        first_name,
+        last_name,
+        email,
+        phone_number
+      ) => {
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "api/employees/" + id,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                first_name,
+                last_name,
+                email,
+                phone_number,
+              }),
+            }
+          );
+          if (resp.ok) {
+            alert("Employee Record updated successfully");
+            return true;
+          }
+        } catch (error) {
+          console.log("Failed to update employee record", error);
+          alert("Failed to update employee message");
+        }
+      },
       deleteEmployee: async (id) => {
         try {
           await fetch(process.env.BACKEND_URL + "/api/employees/" + id, {
@@ -91,6 +123,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         window.location.reload(false);
       },
+
       changeColor: (index, color) => {
         //get the store
         const store = getStore();
