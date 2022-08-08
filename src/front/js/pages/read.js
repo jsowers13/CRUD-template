@@ -1,13 +1,28 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import { Image } from "react-bootstrap";
 
 export const Read = () => {
   const { store, actions } = useContext(Context);
+  const [tableData, setTableData] = useState([]);
   useEffect(() => {
-    actions.getAllEmployees();
+    async function fetchData() {
+      const data = await actions.getAllEmployees();
+      setTableData(data);
+      return data;
+    }
+    fetchData();
   }, []);
 
+  if (tableData.length == 0) {
+    return (
+      <Image
+        className="mx-auto d-block"
+        src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
+      />
+    );
+  }
   return (
     <div className="container">
       <table className="table table-hover">
@@ -22,9 +37,9 @@ export const Read = () => {
           </tr>
         </thead>
         <tbody>
-          {store.employees.map((employee, index) => {
+          {tableData.map((employee, index) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{employee.id}</td>
                 <td>{employee.first_name + " " + employee.last_name}</td>
                 <td>{employee.email}</td>
@@ -33,7 +48,12 @@ export const Read = () => {
                   <i className="fa-solid fa-file-pen"></i>
                 </td>
                 <td className="text-center">
-                  <i class="fa-solid fa-trash-can"></i>
+                  <i
+                    className="fa-solid fa-trash-can"
+                    onClick={() => {
+                      actions.deleteEmployee(employee.id);
+                    }}
+                  ></i>
                 </td>
               </tr>
             );

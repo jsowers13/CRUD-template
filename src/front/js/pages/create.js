@@ -14,6 +14,7 @@ export const Create = () => {
     e.preventDefault();
     actions.createEmployee(firstName, lastName, email, phoneNumber);
     navigate("/read");
+    window.location.reload(false);
   };
   return (
     <div className="container mt-5">

@@ -4,6 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Employee
 from api.utils import generate_sitemap, APIException
+# import requests
 
 api = Blueprint('api', __name__)
 
@@ -38,8 +39,21 @@ def create_new_employee():
     return (jsonify(employee.serialize())), 201
 
 @api.route('/employees/<int:id>', methods=['GET'])
-def get_employee_by_id():
+def get_employee_by_id(id):
     single_employee = Employee.query.filter_by(id=="id")
     print(single_employee)
 
     return jsonify(single_employee), 200
+
+# @api.route('/employees/<int:id>', methods=['PUT'])
+# def update_employee_info(id):
+#     employee = Employee.query.get(id)
+
+
+@api.route('/employees/<int:id>', methods=['DELETE'])
+def delete_employee(id):
+    employee = Employee.query.get(id)
+    db.session.delete(employee)
+    db.session.commit()
+
+    return "successfully deleted employee record"

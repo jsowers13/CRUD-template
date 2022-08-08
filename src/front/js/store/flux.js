@@ -67,7 +67,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              employee_number,
               first_name,
               last_name,
               email,
@@ -75,11 +74,22 @@ const getState = ({ getStore, getActions, setStore }) => {
             }),
           });
           if (resp.ok) {
+            alert("Employee Record Created successfully!");
             return true;
           }
         } catch (error) {
           console.log("Error occurred while creating new employee", error);
         }
+      },
+      deleteEmployee: async (id) => {
+        try {
+          await fetch(process.env.BACKEND_URL + "/api/employees/" + id, {
+            method: "DELETE",
+          });
+        } catch (error) {
+          console.log("Could not delete record", error);
+        }
+        window.location.reload(false);
       },
       changeColor: (index, color) => {
         //get the store
