@@ -38,7 +38,7 @@ def create_new_employee():
     # new_employee = jsonify(employee.serialize)
     return (jsonify(employee.serialize())), 201
 
-@api.route('/employees/<int:id>', methods=['GET'])
+@api.route('/employees/<id>', methods=['GET'])
 def get_employee_by_id(id):
     single_employee = Employee.query.get(id)
     print(single_employee)
@@ -47,9 +47,9 @@ def get_employee_by_id(id):
 
 
 
-@api.route('/employees/<int:id>', methods=['PUT'])
+@api.route('/employees/<id>', methods=['PUT'])
 def update_employee_info(id):
-    record_to_update = Employee.query.get_or_404(id)
+    record_to_update = Employee.query.get(id)
     
     first_name = request.json["first_name"]
     last_name = request.json["last_name"]

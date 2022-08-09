@@ -82,7 +82,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       updateEmployee: async (
-        id,
+        key,
         first_name,
         last_name,
         email,
@@ -90,7 +90,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       ) => {
         try {
           const resp = await fetch(
-            process.env.BACKEND_URL + "/api/employees/" + id,
+            process.env.BACKEND_URL + "/api/employees/" + key,
             {
               method: "PUT",
               headers: {
