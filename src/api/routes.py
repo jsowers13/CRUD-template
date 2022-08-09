@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, flash
 from api.models import db, User, Employee
 from api.utils import generate_sitemap, APIException
 # import requests
@@ -45,18 +45,31 @@ def get_employee_by_id(id):
 
     return jsonify(single_employee.serialize()), 200
 
+
+
 @api.route('/employees/<int:id>', methods=['PUT'])
 def update_employee_info(id):
-    # employee = Employee.query.get(id)
-    body=request.get_json()
-    first_name = body["first_name"]
-    last_name = body["last_name"]
-    email = body["email"]
-    phone_number = body["phone_number"]
-    employee = Employee(id=id, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number)
-    db.session.add(employee)
+    record_to_update = Employee.query.get_or_404(id)
+    
+    first_name = request.json["first_name"]
+    last_name = request.json["last_name"]
+    email = request.json["email"]
+    phone_number = request.json["phone_number"]
+
+    record_to_update.first_name = first_name
+    record_to_update.last_name = last_name
+    record_to_update.email = email
+    record_to_update.phone_number = phone_number
+    # body=request.get_json()
+    # first_name = body["first_name"]
+    # last_name = body["last_name"]
+    # email = body["email"]
+    # phone_number = body["phone_number"]
+    
     db.session.commit()
-    return (jsonify(employee.serialize())), 204
+    
+    return (jsonify(record_to_update.serialize())), 200
+    
 
 @api.route('/employees/<int:id>', methods=['DELETE'])
 def delete_employee(id):

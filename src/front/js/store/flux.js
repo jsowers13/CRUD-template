@@ -90,7 +90,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       ) => {
         try {
           const resp = await fetch(
-            process.env.BACKEND_URL + "api/employees/" + id,
+            process.env.BACKEND_URL + "/api/employees/" + id,
             {
               method: "PUT",
               headers: {
@@ -105,6 +105,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           if (resp.ok) {
+            console.log(resp);
             alert("Employee Record updated successfully");
             return true;
           }
