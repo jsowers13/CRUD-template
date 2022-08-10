@@ -49,11 +49,11 @@ const getState = ({ getStore, getActions, setStore }) => {
       getEmployeeByID: async (id) => {
         try {
           const resp = await fetch(
-            process.env.BACKEND_URL + "api/employees/" + id
+            process.env.BACKEND_URL + "/api/employees/" + id
           );
           const data = await resp.json();
-          setStore({ currentEmployee: data });
-          console.log(currentEmployee);
+          // setStore({ currentEmployee: data });
+          // console.log(currentEmployee);
           return data;
         } catch (error) {
           console.log("Error occurred while retrieving employee record", error);
@@ -82,36 +82,38 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       updateEmployee: async (
-        key,
+        id,
         first_name,
         last_name,
         email,
         phone_number
       ) => {
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL + "/api/employees/" + key,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                first_name,
-                last_name,
-                email,
-                phone_number,
-              }),
-            }
-          );
-          if (resp.ok) {
-            console.log(resp);
-            alert("Employee Record updated successfully");
-            return true;
+        const resp = await fetch(
+          process.env.BACKEND_URL + "/api/employees/" + id,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              first_name,
+              last_name,
+              email,
+              phone_number,
+            }),
           }
-        } catch (error) {
-          console.log("Failed to update employee record", error);
-          alert("Failed to update employee message");
+        );
+
+        if (resp.success) {
+          console.log(resp.response);
+          alert("Employee Record updated successfully");
+          return true;
+        } else {
+          console.log(
+            "Failed to update employee record",
+            resp.error,
+            resp.response
+          );
         }
       },
       deleteEmployee: async (id) => {
